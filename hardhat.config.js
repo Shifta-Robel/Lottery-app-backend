@@ -10,7 +10,7 @@ require("hardhat-gas-reporter");
 require("dotenv").config();
 
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL;
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const PRIVATE_KEY = process.env.RINKEBY_PRIVATE_KEY;
 
 module.exports = {
   defaultNetwork: "hardhat",
