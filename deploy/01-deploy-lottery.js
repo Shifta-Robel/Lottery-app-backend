@@ -8,10 +8,11 @@ const VRF_SUBSCRIPTION_FUND_AMOUNT = 3;
 module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts();
-  const { chainId } = network.config.chainId;
+  const chainId = network.config.chainId;
   let vrfCoordinatorV2_address, subscriptionId;
 
   if (developmentChains.includes(network.name)) {
+    // console.log(networkConfig[chainId]["entranceFee"]);
     const vrfCoordinatorV2Mock = await ethers.getContract(
       "VRFCoordinatorV2Mock"
     );
@@ -29,8 +30,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     subscriptionId = networkConfig[chainId]["subscriptionId"];
   }
 
-  const entranceFee = networkConfig[chainId]["entranceFee"];
   const gasLane = networkConfig[chainId]["gasLane"];
+  const entranceFee = networkConfig[chainId]["entranceFee"];
   const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"];
   const interval = networkConfig[chainId]["interval"];
 

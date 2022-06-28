@@ -25,7 +25,10 @@ module.exports = {
       url: RINKEBY_RPC_URL,
       accounts: [PRIVATE_KEY],
     },
-    localhost: {},
+    localhost: {
+      chainId: 31337,
+      blockConfirmations: 1,
+    },
   },
   solidity: "0.8.8",
   namedAccounts: {
