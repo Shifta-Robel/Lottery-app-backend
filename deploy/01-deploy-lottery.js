@@ -51,3 +51,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     waitConfirmations: network.config.blockConfirmations || 1,
   });
 };
+module.exports.tags = ["all", "Lottery"];

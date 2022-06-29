@@ -20,3 +20,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log("_".repeat(30));
   }
 };
+module.exports.tags = ["all", "mocks"];
