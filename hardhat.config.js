@@ -39,4 +39,8 @@ module.exports = {
       default: 1,
     },
   },
+  gasReporter: {
+    //enabled: process.env.REPORT_GAS !== undefined,
+    enabled: false,
+  },
 };
