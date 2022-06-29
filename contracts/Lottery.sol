@@ -47,7 +47,6 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
     /* Events */
     event lotteryEntered(address indexed player);
-    event requestedWinner(uint256 indexed requestId);
     event winnerPicked(address indexed winner);
 
     constructor(
@@ -109,15 +108,6 @@ contract Lottery is VRFConsumerBaseV2, KeeperCompatibleInterface {
             );
         }
         s_lotteryState = LotteryState.CALCULATING;
-        emit requestedWinner(
-            i_vrfCoordinator.requestRandomWords(
-                i_keyHash,
-                i_subscriptionId,
-                REQUEST_CONFIRMATIONS,
-                i_callBackGasLimit,
-                NUM_WORDS
-            )
-        );
     }
 
     function fulfillRandomWords(uint256, uint256[] memory randomWords)
