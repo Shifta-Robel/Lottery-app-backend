@@ -124,4 +124,47 @@ const {
           assert(upKeepNeeded);
         });
       });
+
+      describe("performUpKeep", function () {
+        it("Works only if checkUpkeep returns true", async function () {
+          await lottery.enterLottery({ value: entranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+          let tx = await lottery.performUpkeep([]);
+          assert(tx);
+        });
+
+        it("It reverts when checkUpkeep returns false", async function () {
+          await expect(lottery.performUpkeep([])).to.be.revertedWith(
+            "Lottery_UpKeepNotNeeded"
+          );
+        });
+
+        it("It updates lotteryState, emits an event and calls VRF coordinator", async function () {
+          await lottery.enterLottery({ value: entranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() - 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+          const txResponse = await lottery.performUpkeep([]);
+          const txReceipt = await txResponse.wait(1);
+
+          const requestId = txReceipt.events[1].args.requestId;
+          const lotteryState = await lottery.getLotteryState();
+          assert(requestId.toNumber() > 0);
+          assert.equal(lotteryState.toString(), "1");
+        });
+      });
+
+      describe("fulfillRandomWords", function () {
+        beforeEach(async () => {
+          await lottery.enterLottery({ value: entranceFee });
+          await network.provider.send("evm_increaseTime", [
+            interval.toNumber() + 1,
+          ]);
+          await network.provider.send("evm_mine", []);
+        });
+      });
     });
