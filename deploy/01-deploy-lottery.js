@@ -2,7 +2,10 @@ const { network, ethers } = require("hardhat");
 const {
   developmentChains,
   networkConfig,
+  VERIFICATION_BLOCK_CONFIRMATIONS,
 } = require("../helper-hardhat.config");
+const { verify } = require("../utils/verify.js");
+
 const VRF_SUBSCRIPTION_FUND_AMOUNT = 3;
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
@@ -50,5 +53,13 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+
+  if (
+    !developmentChains.includes(network.name) &&
+    process.env.ETHERSCAN_API_KEY
+  ) {
+    log("Verifying...");
+    await verify(lottery.address, args);
+  }
 };
 module.exports.tags = ["all", "Lottery"];
