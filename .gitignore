@@ -1,5 +1,7 @@
 node_modules
 .env
+utils
+
 #hardhat files
 artifacts
 cache
